@@ -1,0 +1,115 @@
+.products_content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .content_grid {
+    display: flex;
+    width: 100%;
+  }
+  
+  .content_bar {
+    flex: 1;
+    width: 20%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+  }
+  
+  .content_category,
+  .content_price,
+  .content_size {
+    margin-bottom: 10px;
+  }
+  
+  .content_category span,
+  .content_price span,
+  .content_size span {
+    font-weight: bold;
+  }
+  
+  .product_list {
+    flex: 4;
+    width: 80%;
+  }
+  
+  /* Styling for checkbox labels */
+  .content_bar label,
+  .content_price label,
+  .content_size label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  /* Styling for checkbox input */
+  .content_bar input[type="checkbox"],
+  .content_price input[type="checkbox"],
+  .content_size input[type="checkbox"] {
+    margin-right: 5px;
+  }
+  
+
+
+
+
+  .content{
+  }
+  
+  
+  .img_products_dicount{
+      max-width: 100%;
+      height: auto;
+  }
+  
+  .content_banner {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-top: 10vh;
+    }
+    
+    .content_banner_img {
+      max-width: 100%;
+      height: auto;
+    }
+  .state__managerment_products{
+      display: flex;
+      justify-content: space-around;
+      width: 100%;
+      height: 20vh;
+  }
+  
+  .state_products{
+      width: 20%;
+      height: 40%;
+      border: none;
+      background-color: #ffffff;
+      border-top: 1px dashed rgb(216, 199, 199);
+      border-bottom: 1px dashed rgb(216, 199, 199);
+      border-left: none;
+      border-right: none;
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 1.6rem;
+  }
+  
+  .button-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+  }
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
