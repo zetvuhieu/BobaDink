@@ -207,6 +207,21 @@ const App = () => {
         setCurrentProducts(filteredProducts);
     };
 
+    const [sortByPriceAsc, setSortByPriceAsc] = useState(false);
+
+    const sortProductsByPrice = (products) => {
+        if (sortByPriceAsc) {
+            return products.slice().sort((a, b) => a.price - b.price);
+        } else {
+            return products.slice().sort((a, b) => b.price - a.price);
+        }
+    };
+    const [showSortOptions, setShowSortOptions] = useState(false); // Ban đầu không hiển thị tùy chọn sắp xếp
+
+    const handleDefaultSort = () => {
+        setShowSortOptions(!showSortOptions); // Hiển thị/ẩn tùy chọn sắp xếp
+    };
+
     // Mỗi khi có thay đổi trạng thái của checkbox, gọi hàm handleFilter để lọc sản phẩm
     useEffect(() => {
         handleFilter();
@@ -218,8 +233,11 @@ const App = () => {
         priceUnder50Checked,
         price50To100Checked,
         priceOver100Checked,
-        // Thêm các trạng thái khác của checkbox vào đây nếu có
+        sortByPriceAsc,
     ]);
+    useEffect(() => {
+        setCurrentProducts(sortProductsByPrice(currentProducts));
+    }, [sortByPriceAsc]);
 
     return (
         <div>
@@ -292,12 +310,39 @@ const App = () => {
                         </div>
                     </div>
                     <div className="product_list">
-                        {/* Hiển thị ProductListWithoutSlider */}
+                        <div className="content_sort">
+                            <span>Sắp xếp:</span>
+                            <Button
+                                variant="outlined"
+                                className={cx({ sort_selected: showSortOptions })}
+                                onClick={handleDefaultSort}
+                            >
+                                Mặc định {showSortOptions ? <span className={cx('arrow_down')}>&#9660;</span> : null}
+                            </Button>
+                            {/* Các tùy chọn khác sẽ hiển thị khi showSortOptions là true */}
+                            {showSortOptions && (
+                                <>
+                                    <Button
+                                        variant="outlined"
+                                        className={cx({ sort_selected: sortByPriceAsc === true })}
+                                        onClick={() => setSortByPriceAsc(true)}
+                                    >
+                                        Giá tăng dần
+                                    </Button>
+                                    <Button
+                                        variant="outlined"
+                                        className={cx({ sort_selected: sortByPriceAsc === false })}
+                                        onClick={() => setSortByPriceAsc(false)}
+                                    >
+                                        Giá giảm dần
+                                    </Button>
+                                </>
+                            )}
+                        </div>
                         <ProductListWithoutSlider products={currentProducts} addProductToCart={addProductToCart} />
                     </div>
                 </div>
             </div>
-
             <Footer />
         </div>
     );

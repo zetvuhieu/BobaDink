@@ -108,12 +108,6 @@ const Header = ({ cartItems, setCartItems }) => {
     ]);
     const navigate = useNavigate();
 
-    const handleClickSignUp = () => {
-        navigate('/sign_up');
-    };
-    const handleClickSignIn = () => {
-        navigate('/sign_in');
-    };
     const handleClickHome = () => {
         navigate('/');
     };
@@ -132,6 +126,33 @@ const Header = ({ cartItems, setCartItems }) => {
     const handleClickMenuItem = (itemName, path) => {
         setActiveMenuItem(itemName);
         navigate(path);
+    };
+
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [avatarUrl, setAvatarUrl] = useState(null);
+
+    const handleClickSignUp = () => {
+        navigate('/sign_up');
+    };
+
+    const handleClickSignIn = () => {
+        // Implement your sign-in logic here.
+        // For this example, we'll assume the login is successful.
+        setIsLoggedIn(true);
+
+        // Set the avatar URL after successful login
+        setAvatarUrl('https://example.com/avatar.jpg');
+    };
+
+    const handleClickSignOut = () => {
+        // Implement your sign-out logic here.
+        setIsLoggedIn(false);
+        setAvatarUrl(null); // Reset avatar URL on logout
+    };
+
+    // Function to handle login button click and navigate to /login
+    const handleLoginClick = () => {
+        navigate('/login');
     };
 
     return (
@@ -158,12 +179,23 @@ const Header = ({ cartItems, setCartItems }) => {
                             <FontAwesomeIcon className={cx('icon_search')} icon={faSearch} />
                         </div>
                         <div className={cx('header_account')}>
-                            <button onClick={handleClickSignUp} className={cx('header_btn')}>
-                                Đăng ký
-                            </button>
-                            <button onClick={handleClickSignIn} className={cx('header_btn')}>
-                                Đăng nhập
-                            </button>
+                            {isLoggedIn ? (
+                                // If the user is logged in, show the avatar button.
+                                <button onClick={handleClickSignOut} className={cx('header_btn')}>
+                                    <img src={avatarUrl} alt="Avatar" className={cx('avatar')} />
+                                </button>
+                            ) : (
+                                // If the user is not logged in, show the sign-up and sign-in buttons.
+                                <>
+                                    <button onClick={handleClickSignUp} className={cx('header_btn')}>
+                                        Đăng ký
+                                    </button>
+                                    {/* Use the handleLoginClick function to navigate to the login page */}
+                                    <button onClick={handleLoginClick} className={cx('header_btn')}>
+                                        Đăng nhập
+                                    </button>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -282,7 +314,7 @@ const Header = ({ cartItems, setCartItems }) => {
                             <li
                                 onClick={() => {
                                     handleClickMenuItem('Tin tức');
-                                    navigate('/products');
+                                    navigate('/');
                                 }}
                                 className={cx('menu_item', {
                                     active: activeMenuItem === 'Tin tức', // Nếu trạng thái bằng 'Tin tức', thêm class 'active'
@@ -292,7 +324,10 @@ const Header = ({ cartItems, setCartItems }) => {
                                 <FontAwesomeIcon className={cx('icon_chevron')} icon={faChevronRight} />
                             </li>
                             <li
-                                onClick={() => handleClickMenuItem('Giới thiệu')}
+                                onClick={() => {
+                                    handleClickMenuItem('Giới thiệu');
+                                    navigate('/about_us');
+                                }}
                                 className={cx('menu_item', {
                                     active: activeMenuItem === 'Giới thiệu',
                                 })}
@@ -309,8 +344,8 @@ const Header = ({ cartItems, setCartItems }) => {
                             </li>
                         </ul>
                     </div>
-                    <div className={cx('header_cart')} onClick={toggleCart}>
-                        <FontAwesomeIcon className={cx('icon_cart')} icon={faCartPlus} />
+                    <div className={cx('header_cart')}>
+                        <FontAwesomeIcon className={cx('icon_cart')} icon={faCartPlus} onClick={toggleCart} />
                     </div>
                 </div>
             </div>
