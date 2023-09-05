@@ -2,102 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import className from 'classnames/bind';
-import styles from './header.scss';
+import styles from './test.module.scss';
 import { faCartPlus, faChevronRight, faSearch, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import logo from '~/assets/img/logo/logo.jpg';
+import Cart from '~/components/Shopping/Cart';
 
 const cx = className.bind(styles);
 
-const Header = ({ cartItems, setCartItems }) => {
-    const [isCartOpen, setCartOpen] = useState(false);
-
+const Header = () => {
+    const [showCart, setShowCart] = useState(false);
     const toggleCart = () => {
-        setCartOpen((prevOpen) => !prevOpen);
-    };
-
-    const Cart = () => {
-        const removeFromCart = (itemId) => {
-            const updatedCartItems = cartItems.filter((item) => item.id !== itemId);
-            setCartItems(updatedCartItems);
-        };
-        const updateQuantity = (itemId, newQuantity) => {
-            if (newQuantity === 0) {
-                removeFromCart(itemId);
-            } else {
-                setCartItems(
-                    cartItems.map((item) => {
-                        if (item.id === itemId) {
-                            return { ...item, quantity: newQuantity };
-                        }
-                        return item;
-                    }),
-                );
-            }
-        };
-        const totalPrice = cartItems.reduce(
-            (total, item) => total + (item.price - (item.price * item.discountPercentage) / 100) * item.quantity,
-            0,
-        );
-        const handleCheckout = () => {
-            navigate('/checkout');
-        };
-        return (
-            <div className={cx('cart_content')}>
-                <div className={cx('cart_content_wrapper')}>
-                    <h2>Cart</h2>
-                    <ul className={cx('cart_items')}>
-                        {cartItems.map((item) => (
-                            <li key={item.id} className={cx('cart_item')}>
-                                <div className={cx('item_info')}>
-                                    <img className={cx('item_img')} src={item.src} alt={item.name} />
-                                    <div className={cx('properties_products')}>
-                                        <strong className={cx('item_name')}>{item.name}</strong>
-                                        <span className={cx('item_price')}>{item.price}.000 vnđ</span>
-                                        <div className={cx('action_update')}>
-                                            <button
-                                                className={cx('update_quantity')}
-                                                onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                            >
-                                                -
-                                            </button>
-                                            <span className={cx('item_quantity')}>{item.quantity}</span>
-                                            <button
-                                                className={cx('update_quantity')}
-                                                onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                            >
-                                                +
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className={cx('item_actions')}>
-                                    <a onClick={() => removeFromCart(item.id)}>
-                                        <FontAwesomeIcon icon={faTrashCan} />
-                                    </a>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
-                    <div>
-                        {cartItems.length > 0 ? (
-                            <>
-                                <div className={cx('total_price_container')}>
-                                    <h3 className={cx('total_price_left')}>Thành tiền:</h3>
-                                    <h3 className={cx('total_price_right')}>{totalPrice}.000 vnđ</h3>
-                                </div>
-                                <div className={cx('checkout_action')}>
-                                    <button className={cx('btn_checkout_action')} onClick={handleCheckout}>
-                                        Thanh toán
-                                    </button>
-                                </div>
-                            </>
-                        ) : (
-                            <p>Không có đơn hàng.</p>
-                        )}
-                    </div>
-                </div>
-            </div>
-        );
+        setShowCart((prevOpen) => !prevOpen);
     };
 
     const [traditionalTea] = useState([
@@ -152,7 +67,6 @@ const Header = ({ cartItems, setCartItems }) => {
         localStorage.removeItem('user');
         setUser(null); // Clear the user state
         setIsLoggedIn(false);
-        setCartItems([]);
     };
     const [showLogoutButton, setShowLogoutButton] = useState(false);
     const [isActive, setIsActive] = useState(false);
@@ -401,7 +315,11 @@ const Header = ({ cartItems, setCartItems }) => {
                     </div>
                 </div>
             </div>
-            {isCartOpen && <Cart cartItems={cartItems} setCartItems={setCartItems} />}
+            {showCart && (
+                <div className={cx('cart-container')}>
+                    <Cart />
+                </div>
+            )}
         </div>
     );
 };

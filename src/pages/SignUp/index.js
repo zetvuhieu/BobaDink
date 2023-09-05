@@ -1,41 +1,48 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Header from '~/components/Layout/Header/';
-import { Formik, Form, Field } from 'formik';
-import * as Yup from 'yup';
 import { TextField, Button, Grid, Typography, Box } from '@mui/material';
 
-const initialValues = {
-    username: '',
-    password: '',
-    email: '',
-    phoneNumber: '',
-};
-
-const validationSchema = Yup.object({
-    email: Yup.string().email('Email không hợp lệ').required('Email là bắt buộc'),
-    username: Yup.string().required('Tên người dùng là bắt buộc'),
-    password: Yup.string()
-        .required('Mật khẩu là bắt buộc')
-        .matches(
-            /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{6,}$/,
-            'Mật khẩu phải chứa ít nhất 6 kí tự, bao gồm ít nhất 1 chữ hoa và 1 kí tự đặc biệt',
-        ),
-    surname: Yup.string().required('Tên người dùng là bắt buộc'),
-    phoneNumber: Yup.string().required('Số điện thoại là bắt buộc'),
-});
-
 const RegistrationForm = () => {
-    const handleSubmit = (values) => {
+    const [formData, setFormData] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        password: '',
+    });
+
+    const [errors, setErrors] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        password: '',
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
+    const [SignupError, setSignupError] = useState('');
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        // Validation logic can be added here if needed
+
+        // Sending data to the server using axios
         axios
-            .post('/api/register', values)
+            .post('http://localhost:80/api/users/auth/signup', formData)
             .then((response) => {
                 console.log(response.data);
-                // Thực hiện các hành động sau khi đăng ký thành công
+                setSignupError('Đăng ký thành công');
             })
             .catch((error) => {
                 console.error(error);
-                // Hiển thị thông báo lỗi đăng ký
+                setSignupError('Đăng ký chưa thành công');
             });
     };
 
@@ -49,101 +56,93 @@ const RegistrationForm = () => {
                     <Typography variant="h4" align="center" gutterBottom>
                         Đăng ký
                     </Typography>
-                    <Formik initialValues={initialValues} validationSchema={validationSchema}>
-                        <Form>
-                            <Grid container spacing={2}>
-                                <Grid item xs={12} sm={6}>
-                                    <Field name="surname">
-                                        {({ field }) => (
-                                            <TextField
-                                                {...field}
-                                                label="Họ"
-                                                variant="outlined"
-                                                fullWidth
-                                                required
-                                                error={Boolean(field.error)}
-                                                helperText={field.error}
-                                            />
-                                        )}
-                                    </Field>
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <Field name="username">
-                                        {({ field }) => (
-                                            <TextField
-                                                {...field}
-                                                label="Tên"
-                                                variant="outlined"
-                                                fullWidth
-                                                required
-                                                error={Boolean(field.error)}
-                                                helperText={field.error}
-                                            />
-                                        )}
-                                    </Field>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Field name="email">
-                                        {({ field }) => (
-                                            <TextField
-                                                {...field}
-                                                label="Email"
-                                                type="email"
-                                                variant="outlined"
-                                                fullWidth
-                                                required
-                                                error={Boolean(field.error)}
-                                                helperText={field.error}
-                                            />
-                                        )}
-                                    </Field>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Field name="phoneNumber">
-                                        {({ field }) => (
-                                            <TextField
-                                                {...field}
-                                                label="Số điện thoại"
-                                                type="tel"
-                                                variant="outlined"
-                                                fullWidth
-                                                required
-                                                error={Boolean(field.error)}
-                                                helperText={field.error}
-                                            />
-                                        )}
-                                    </Field>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Field name="password">
-                                        {({ field }) => (
-                                            <TextField
-                                                {...field}
-                                                label="Mật khẩu"
-                                                type="password"
-                                                variant="outlined"
-                                                fullWidth
-                                                required
-                                                error={Boolean(field.error)}
-                                                helperText={field.error}
-                                            />
-                                        )}
-                                    </Field>
-                                </Grid>
-                                <Grid item xs={12} sx={{ mt: 2 }}>
-                                    <Button
-                                        type="submit"
-                                        variant="contained"
-                                        sx={{ backgroundColor: '#f8452d', color: 'white' }}
-                                        fullWidth
-                                        onClick={handleSubmit}
-                                    >
-                                        Đăng ký
-                                    </Button>
-                                </Grid>
+                    <form onSubmit={handleSubmit}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    name="firstName"
+                                    label="Họ"
+                                    variant="outlined"
+                                    fullWidth
+                                    required
+                                    value={formData.surname}
+                                    onChange={handleChange}
+                                    error={Boolean(errors.surname)}
+                                    helperText={errors.surname}
+                                />
                             </Grid>
-                        </Form>
-                    </Formik>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    name="lastName"
+                                    label="Tên"
+                                    variant="outlined"
+                                    fullWidth
+                                    required
+                                    value={formData.username}
+                                    onChange={handleChange}
+                                    error={Boolean(errors.username)}
+                                    helperText={errors.username}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    name="email"
+                                    label="Email"
+                                    type="email"
+                                    variant="outlined"
+                                    fullWidth
+                                    required
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    error={Boolean(errors.email)}
+                                    helperText={errors.email}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    name="phone"
+                                    label="Số điện thoại"
+                                    type="tel"
+                                    variant="outlined"
+                                    fullWidth
+                                    required
+                                    value={formData.phoneNumber}
+                                    onChange={handleChange}
+                                    error={Boolean(errors.phoneNumber)}
+                                    helperText={errors.phoneNumber}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    name="password"
+                                    label="Mật khẩu"
+                                    type="password"
+                                    variant="outlined"
+                                    fullWidth
+                                    required
+                                    value={formData.password}
+                                    onChange={handleChange}
+                                    error={Boolean(errors.password)}
+                                    helperText={errors.password}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sx={{ mt: 2 }}>
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    sx={{ backgroundColor: '#f8452d', color: 'white' }}
+                                    fullWidth
+                                >
+                                    Đăng ký
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </form>
+                    {SignupError && (
+                        <Typography variant="body2" color="error" align="center" sx={{ mt: 1, fontSize: '1.5rem' }}>
+                            {SignupError}
+                        </Typography>
+                    )}
                 </Box>
             </div>
         </div>
