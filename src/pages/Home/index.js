@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '~/components/Layout/Header/';
 import Footer from '~/components/Layout/Footer/';
 import className from 'classnames/bind';
@@ -214,6 +214,9 @@ const App = () => {
             setCurrentProducts(products);
         }
     };
+    useEffect(() => {
+        document.title = 'Boba Drink';
+    }, []);
 
     return (
         <div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Header from '~/components/Layout/Header/';
 import { TextField, Button, Grid, Typography, Box } from '@mui/material';
@@ -45,7 +45,9 @@ const RegistrationForm = () => {
                 setSignupError('Đăng ký chưa thành công');
             });
     };
-
+    useEffect(() => {
+        document.title = 'Đăng ký';
+    }, []);
     return (
         <div>
             <div>

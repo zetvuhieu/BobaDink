@@ -238,6 +238,9 @@ const App = () => {
     useEffect(() => {
         setCurrentProducts(sortProductsByPrice(currentProducts));
     }, [sortByPriceAsc]);
+    useEffect(() => {
+        document.title = 'Tất cả sản phẩm';
+    }, []);
 
     return (
         <div>

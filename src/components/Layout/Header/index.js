@@ -120,6 +120,8 @@ const Header = ({ cartItems, setCartItems }) => {
             setActiveMenuItem('Trang chủ');
         } else if (currentPath === '/products') {
             setActiveMenuItem('Sản phẩm');
+        } else if (currentPath === '/about_us') {
+            setActiveMenuItem('Giới thiệu');
         }
     }, []);
 

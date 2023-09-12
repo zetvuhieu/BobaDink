@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Header from '~/components/Layout/Header/';
 import { TextField, Button, Grid, Typography, Box } from '@mui/material';
@@ -18,13 +18,21 @@ const RegistrationForm = () => {
                 console.log(response.data);
                 localStorage.setItem('isLoggedIn', true);
                 localStorage.setItem('user', JSON.stringify(response.data.user));
-                navigate('/');
+                const isAdmin = response.data.user.isAdmin;
+                if (isAdmin) {
+                    navigate('/admin');
+                } else {
+                    navigate('/');
+                }
             })
             .catch((error) => {
                 console.error(error);
                 setLoginError('Sai tài khoản hoặc mật khẩu');
             });
     };
+    useEffect(() => {
+        document.title = 'Đăng nhập';
+    }, []);
 
     return (
         <div>

@@ -1,0 +1,29 @@
+/* Trong file home.scss */
+.home {
+    display: flex;
+}
+
+/* Trong file home.scss */
+
+/* Phần sidebar */
+.home_sidebar {
+    width: 20%;
+    background-color: #785858;
+    color: white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    position: sticky;
+    top: 0;
+    height: 100vh; /* Đảm bảo sidebar chiếm toàn bộ chiều cao của viewport */
+    overflow-y: auto; /* Cho phép cuộn bên trong sidebar nếu cần */
+}
+
+/* Phần nội dung */
+.home_content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    max-height: 100vh; /* Đảm bảo nội dung chiếm toàn bộ chiều cao của viewport */
+}
+
